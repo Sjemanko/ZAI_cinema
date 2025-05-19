@@ -29,6 +29,6 @@ class Movie(models.Model):
     movie_type = models.CharField(max_length=100, choices=MovieType.choices)
 
     def __str__(self):
-        return f'{self.name, self.release_date.__str__(), list(self.genre.all())}'
+        return f'{self.name, self.release_date.__str__(), list(self.genre.all().values_list())}'
 
 
