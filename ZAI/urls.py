@@ -19,8 +19,13 @@ from django.urls import path, include
 from django.contrib.auth.models import User
 from rest_framework import routers, serializers, viewsets
 
+from userAuth.views import GroupViewSet, UserViewSet
 
+router = routers.DefaultRouter()
+router.register(r'groups', GroupViewSet)
+router.register(r'users', UserViewSet)
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('', include(router.urls)),
     path('api-auth/', include('rest_framework.urls'))
 ]
