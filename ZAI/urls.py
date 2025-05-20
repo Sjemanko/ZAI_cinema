@@ -16,19 +16,11 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from django.contrib.auth.models import User
-from rest_framework import routers, serializers, viewsets
 
-from movies.views import MovieViewSet
-from userAuth.views import GroupViewSet, UserViewSet
-
-router = routers.DefaultRouter()
-router.register(r'groups', GroupViewSet)
-router.register(r'users', UserViewSet)
-router.register(r'movies', MovieViewSet)
+from ZAI.router import router
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include(router.urls)),
+    path('api/', include(router.urls)),
     path('api-auth/', include('rest_framework.urls'))
 ]

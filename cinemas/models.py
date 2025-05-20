@@ -25,7 +25,7 @@ class CinemaHall(models.Model):
 
 class Seat(models.Model):
     cinema_hall = models.ForeignKey(CinemaHall, on_delete=models.CASCADE, blank=True, null=True)
-    number = models.PositiveSmallIntegerField(unique=True)
+    number = models.PositiveSmallIntegerField()
 
     class SeatType(models.TextChoices):
         VIP = "VIP"
@@ -36,6 +36,9 @@ class Seat(models.Model):
 
     seat_type = models.CharField(choices=SeatType.choices, default=SeatType.STANDARD)
     is_available = models.BooleanField(default=True)
+
+    class Meta:
+        unique_together = ('cinema_hall', 'number')
 
     def __str__(self):
         return f'{self.cinema_hall.cinema.location, self.cinema_hall.name, self.number, str(self.seat_type)}'
