@@ -1,7 +1,8 @@
 from rest_framework import viewsets
 
-from cinemas.models import Cinema, CinemaHall, Seat
-from cinemas.api.serializers import CinemaSerializer, CinemaHallsSerializer, SeatSerializer
+from cinemas.models import Cinema, CinemaHall, Seat, ShowTime, Booking
+from cinemas.api.serializers import CinemaSerializer, CinemaHallsSerializer, SeatSerializer, ShowTimeSerializer, \
+    BookingSerializer
 
 
 # Create your views here.
@@ -28,7 +29,17 @@ class SeatViewSet(viewsets.ModelViewSet):
     # powiązanie linków cinema_hall -> seats
     def get_queryset(self):
         queryset = super().get_queryset()
-        cinema_hall_id = self.request.query_params.get('cinema_hall') # parametr z link
-        if cinema_hall_id:
-            queryset = queryset.filter(cinema_hall_id=cinema_hall_id)
+        cinema_hall = self.request.query_params.get('cinema') # parametr z link
+        if cinema_hall:
+            queryset = queryset.filter(cinema_hall_id=cinema_hall)
         return queryset
+
+
+class ShowTimeViewSet(viewsets.ModelViewSet):
+    queryset = ShowTime.objects.all()
+    serializer_class = ShowTimeSerializer
+
+
+class BookingViewSet(viewsets.ModelViewSet):
+    queryset = Booking.objects.all()
+    serializer_class = BookingSerializer

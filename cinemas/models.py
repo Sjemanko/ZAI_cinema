@@ -22,6 +22,8 @@ class CinemaHall(models.Model):
     def __str__(self):
         return f'{self.cinema.name, self.cinema.location, self.name, self.hall_number}'
 
+    class Meta:
+        unique_together = ('hall_number', 'cinema')
 
 class Seat(models.Model):
     cinema_hall = models.ForeignKey(CinemaHall, on_delete=models.CASCADE, blank=True, null=True)
@@ -41,7 +43,7 @@ class Seat(models.Model):
         unique_together = ('cinema_hall', 'number')
 
     def __str__(self):
-        return f'{self.cinema_hall.cinema.location, self.cinema_hall.name, self.number, str(self.seat_type)}'
+        return f'{self.cinema_hall.cinema.location, self.cinema_hall.name, self.number, str(self.seat_type), self.is_available}'
 
 
 class ShowTime(models.Model):
@@ -60,7 +62,7 @@ class Booking(models.Model):
     show_time = models.ForeignKey(ShowTime, on_delete=models.CASCADE, blank=True, null=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True)
     seat = models.ForeignKey(Seat, on_delete=models.CASCADE, blank=True, null=True)
-    purchase_date = models.DateTimeField()
+    purchase_date = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return f'{self.show_time.name, self.user.first_name, self.seat.number, self.seat.seat_type, self.show_time.ticket_price}'
