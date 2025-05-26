@@ -2,7 +2,7 @@ from rest_framework import routers
 
 from cinemas.api.views import CinemaViewSet, CinemaHallsViewSet, SeatViewSet, ShowTimeViewSet, BookingViewSet
 from movies.api.views import MovieViewSet
-from userAuth.api.views import GroupViewSet, UserViewSet
+from userAuth.api.views import GroupViewSet, UserViewSet, ProfileViewSet
 
 router = routers.DefaultRouter()
 router.register(r'groups', GroupViewSet)
@@ -12,5 +12,5 @@ router.register(r'cinemas', CinemaViewSet)
 router.register(r'cinemahalls', CinemaHallsViewSet)
 router.register(r'seats', SeatViewSet)
 router.register(r'showtimes', ShowTimeViewSet)
-
 router.register(r'bookings', BookingViewSet)
+router.register(r'profiles', ProfileViewSet)

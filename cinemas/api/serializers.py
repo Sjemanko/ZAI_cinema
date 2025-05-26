@@ -1,3 +1,4 @@
+from django.utils import timezone
 from rest_framework import serializers
 from rest_framework.reverse import reverse
 
@@ -52,24 +53,40 @@ class ShowTimeSerializer(serializers.ModelSerializer):
 
 class BookingSerializer(serializers.ModelSerializer):
     seat = CustomSeatField(queryset=Seat.objects.all())
-    # custom field for cost of full booking
+
     class Meta:
         model = Booking
-        fields = '__all__'
+        fields = ['url'] + [field.name for field in Booking._meta.fields]
         read_only_fields = ['purchase_date']
 
     def create(self, validated_data):
         seat = validated_data['seat']
 
-        # Zabezpieczenie: sprawdź czy już zajęte
         if not seat.is_available:
             raise serializers.ValidationError({'seat': 'To miejsce jest już zajęte.'})
 
-        # Ustaw jako zajęte
         seat.is_available = False
         seat.save()
 
         return super().create(validated_data)
+
+    def update(self, instance, validated_data):
+        old_seat = instance.seat
+        new_seat = validated_data['seat']
+        new_payment_status = validated_data['payment_status']
+
+
+        if new_seat != old_seat:
+            if not new_seat.is_available:
+                raise serializers.ValidationError({'seat': 'To miejsce jest już zajęte.'})
+            old_seat.is_available = True
+            old_seat.save()
+            new_seat.is_available = False
+            new_seat.save()
+
+        if new_payment_status and new_payment_status is True and instance.purchase_date is None:
+            instance.purchase_date = timezone.now()
+        return super().update(instance, validated_data)
 
     def validate(self, data):
         seat = data.get('seat')

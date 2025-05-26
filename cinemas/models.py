@@ -2,6 +2,8 @@ from django.contrib.auth.models import User
 from django.db import models
 
 from movies.models import Movie
+from userAuth.models import Profile
+
 
 # Create your models here.
 class Cinema(models.Model):
@@ -60,9 +62,10 @@ class ShowTime(models.Model):
 
 class Booking(models.Model):
     show_time = models.ForeignKey(ShowTime, on_delete=models.CASCADE, blank=True, null=True)
-    user = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True)
+    profile = models.ForeignKey(Profile, on_delete=models.CASCADE, blank=True, null=True, related_name="bookings")
     seat = models.ForeignKey(Seat, on_delete=models.CASCADE, blank=True, null=True)
-    purchase_date = models.DateTimeField(auto_now=True)
+    payment_status = models.BooleanField(default=False)
+    purchase_date = models.DateTimeField(null=True, blank=True)
 
     def __str__(self):
-        return f'{self.show_time.name, self.user.first_name, self.seat.number, self.seat.seat_type, self.show_time.ticket_price}'
+        return f'{self.show_time.name, self.profile, self.seat.number, self.seat.seat_type, self.show_time.ticket_price}'

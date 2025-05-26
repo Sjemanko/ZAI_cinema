@@ -12,6 +12,7 @@ class Genre(models.Model):
 class Movie(models.Model):
     name = models.CharField(max_length=100)
     length = models.IntegerField()
+    poster = models.ImageField(null=True, blank=True, upload_to="movies/")
 
     class Language(models.TextChoices):
         ENGLISH = 'ENG', _('English')

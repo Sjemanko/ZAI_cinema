@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from rest_framework.permissions import IsAdminUser, IsAuthenticatedOrReadOnly
 
 from movies.models import Movie, Genre
 
@@ -15,4 +16,5 @@ class MovieSerializer(serializers.ModelSerializer):
     genre = GenreRelatedField(many=True, queryset=Genre.objects.all())
     class Meta:
         model = Movie
-        fields = ['url', 'name', 'length', 'language', 'release_date', 'description', 'movie_type', 'genre']
+        fields = ['url', 'poster', 'name', 'length', 'language', 'release_date', 'description', 'movie_type', 'genre']
+
