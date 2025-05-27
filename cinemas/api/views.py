@@ -13,8 +13,6 @@ from cinemas.api.serializers import CinemaSerializer, CinemaHallsSerializer, Sea
 class CinemaViewSet(viewsets.ModelViewSet):
     queryset = Cinema.objects.all()
     serializer_class = CinemaSerializer
-    permission_classes = (IsAdminUser,)
-
 
 class CinemaHallsViewSet(viewsets.ModelViewSet):
     queryset = CinemaHall.objects.all()
